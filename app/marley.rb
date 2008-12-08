@@ -11,6 +11,8 @@ require File.join(File.dirname(__FILE__), '..', 'vendor', 'githubber')   # ... g
 # $:.unshift File.dirname(__FILE__) + 'vendor/sinatra/lib'
 # require 'sinatra'
 
+require 'ruby-debug'
+
 MARLEY_ROOT = File.join(File.dirname(__FILE__), '..') unless defined?(MARLEY_ROOT)
 
 CONFIG = YAML.load_file( File.join(MARLEY_ROOT, 'config', 'config.yml') ) unless defined?(CONFIG)
@@ -126,6 +128,10 @@ get '/:post_id/feed' do
   builder :post
 end
 
+get "/posts/*.jpg" do
+  directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.jpg"))}
+  send_file(File.join(directory, params['splat'].first + ".jpg"), :file_name => File.join(directory, params['splat'].first + ".jpg"), :type => 'image/jpeg', :disposition => 'inline')
+end
 
 post '/sync' do
   throw :halt, 404 and return if not CONFIG['github_token'] or CONFIG['github_token'].nil?

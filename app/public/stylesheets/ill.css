@@ -71,6 +71,11 @@ div.post {
   margin-left: 10px;
 }
 
+.post img {
+  display: block;
+  margin: 10px 0;
+}
+
 .post h1 {
   font-size: 32px;
   line-height: 1.0em;

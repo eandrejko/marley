@@ -96,7 +96,7 @@ module Marley
       post[:title]        = file_content.scan( self.regexp[:title] ).first.to_s.strip if post[:title].nil?
       post[:published_on] = DateTime.parse( post[:published_on] ) rescue File.mtime( File.dirname(file) )
 
-      post[:perex]        = file_content.scan( self.regexp[:perex] ).first.to_s.strip unless options[:except].include? 'perex' or
+      post[:perex]        = RDiscount::new(file_content.scan( self.regexp[:perex] ).first.to_s.strip).to_html unless options[:except].include? 'perex' or
                                                                                       not options[:only].include? 'perex'
       post[:body]         = body                                                      unless options[:except].include? 'body' or
                                                                                       not options[:only].include? 'body'
