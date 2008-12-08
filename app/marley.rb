@@ -129,8 +129,12 @@ get '/:post_id/feed' do
 end
 
 get "/posts/*.jpg" do
-  directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.jpg"))}
-  send_file(File.join(directory, params['splat'].first + ".jpg"), :file_name => File.join(directory, params['splat'].first + ".jpg"), :type => 'image/jpeg', :disposition => 'inline')
+  begin
+    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.jpg"))}
+    send_file(File.join(directory, params['splat'].first + ".jpg"), :file_name => File.join(directory, params['splat'].first + ".jpg"), :type => 'image/jpeg', :disposition => 'inline')
+  rescue
+    throw :halt, [404, not_found ]
+  end
 end
 
 post '/sync' do

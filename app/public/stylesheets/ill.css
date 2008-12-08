@@ -92,6 +92,11 @@ div.post {
   float: right;
 }
 
+.post-date img {
+  display: inline;
+  margin:0;
+}
+
 
 .post-header {
   overflow: hidden;

@@ -6,7 +6,7 @@ module Marley
   # Data source is Marley::Configuration::DATA_DIRECTORY (set in <tt>config.yml</tt>)
   class Post
     
-    attr_reader :id, :title, :perex, :body, :body_html, :meta, :published_on, :updated_on, :published, :comments
+    attr_reader :id, :title, :perex, :body, :body_html, :full_body_html, :meta, :published_on, :updated_on, :published, :comments
     
     # comments are referenced via +has_many+ in Comment
     
@@ -89,6 +89,7 @@ module Marley
       file_content  = File.read(file)
       meta_content  = file_content.slice!( self.regexp[:meta] )
       body          = file_content.sub( self.regexp[:title], '').sub( self.regexp[:perex], '').strip
+      full_body     = file_content.sub( self.regexp[:title], '').strip
       post          = Hash.new
 
       post[:id]           = dirname.sub(self.regexp[:id], '\1').sub(/\.draft$/, '')
@@ -101,6 +102,8 @@ module Marley
       post[:body]         = body                                                      unless options[:except].include? 'body' or
                                                                                       not options[:only].include? 'body'
       post[:body_html]    = RDiscount::new( body ).to_html                            unless options[:except].include? 'body_html' or
+                                                                                      not options[:only].include? 'body_html'
+      post[:full_body_html] = RDiscount::new( full_body ).to_html                            unless options[:except].include? 'body_html' or
                                                                                       not options[:only].include? 'body_html'
       post[:meta]         = ( meta_content ) ? YAML::load( meta_content.scan( self.regexp[:meta]).to_s ) : 
                                                nil unless options[:except].include? 'meta' or not options[:only].include? 'meta'

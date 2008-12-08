@@ -6,18 +6,12 @@
 		<span class="post-date">
       <%= human_date @post.published_on %><br/>
       <a href="#comments"><%= @post.comments.size %>&nbsp;comments</a>
-			<a href="http://<%= hostname %>/<%= @post.id %>/feed" class="image">
-			<img src='/images/rss.gif'/>
-			</a>
+			<a href="http://<%= hostname %>/<%= @post.id %>/feed" class="image">&nbsp;<img src='/images/rss.gif'/></a>
     </span>
   </div>
   
   <div class="body">
-		<% if @post.body.empty? %>
-			<%= @post.perex %>
-		<% else %>
-	    <%= @post.body_html %>
-		<% end %>
+	    <%= @post.full_body_html %>
   </div><!-- /body -->
   
   <div id="comments">
