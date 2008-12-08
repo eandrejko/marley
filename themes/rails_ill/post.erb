@@ -13,7 +13,11 @@
   </div>
   
   <div class="body">
-    <%= @post.body_html %>
+		<% if @post.body.empty? %>
+			<%= @post.perex %>
+		<% else %>
+	    <%= @post.body_html %>
+		<% end %>
   </div><!-- /body -->
   
   <div id="comments">

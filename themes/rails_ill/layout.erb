@@ -43,9 +43,11 @@
 			
 			<div class='sidebar'>
 				<h2><img src='/images/flourish-l.gif'/>Posts<img src='/images/flourish-r.gif'/></h2>
+				<ul>
 				<% Marley::Post.published.each do |post| %>
-				<a href="/<%= post.id %>.html"><%= post.title %></a><br>
+				<li><a href="/<%= post.id %>.html"><%= post.title %></a></li>
 				<% end %>
+				</ul>
 			</div>
 			
 			<div class='sidebar'>

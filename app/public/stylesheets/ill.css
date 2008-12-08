@@ -64,6 +64,7 @@ li.post {
 
 li.post h1 {
   margin-bottom: 0px;
+  font-size: 24px;
 }
 
 div.post {
@@ -101,6 +102,15 @@ div.post {
 
 .sidebar {
   margin: 30px 0;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+  margin-left: 0px;
 }
 
 .sidebar p{
