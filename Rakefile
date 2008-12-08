@@ -73,15 +73,15 @@ end
 namespace :server do
   
   task :start do
-    exec "cd app; thin -R rackup.ru -d -P ../tmp/pids/thin.pid -l ../log/production.log -e production -p 4500 start"
+    # exec "cd app; thin -R rackup.ru -d -P ../tmp/pids/thin.pid -l ../log/production.log -e production -p 4500 start"
   end
   
   task :stop do
-    exec "thin stop"
+    # exec "thin stop"
   end
   
   task :restart do 
-    exec "thin restart"
+    # exec "thin restart"
   end
   
 end
