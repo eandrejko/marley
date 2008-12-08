@@ -1,5 +1,7 @@
 module Marley
 
+  require 'digest/md5' # for gravatars
+  
   # = Comments for articles
   # .db file is created in Marley::Configuration::DATA_DIRECTORY (set in <tt>config.yml</tt>)
   class Comment < ActiveRecord::Base
@@ -14,6 +16,11 @@ module Marley
     validates_presence_of :author, :email, :body, :post_id
 
     before_create :fix_urls, :check_spam
+    
+    def gravatar_url(options = {})
+      options[:size] ||= 40
+      "http://gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email) + "?s=" + options[:size].to_s
+    end
     
     private
 

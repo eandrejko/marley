@@ -217,6 +217,8 @@ div.post {
   clear: left;
   margin-left: 6em;
   margin-top: -15px;
+  color: #FF7600;
+  font-weight: bold;
 }
 
 .message {
@@ -231,8 +233,21 @@ div.post {
   padding-top: 10px;
   padding-left: 30px;
   margin-left: 70px;
+  margin-bottom: 60px;
   background: url(/images/callout.gif) no-repeat left bottom;
+  height: 30px;
 }
+
+.author img.gravatar {
+  display: inline;
+  margin: 0px 5px;
+  position: relative;
+  top: 10px;
+  background-color: #fff;
+  padding: 2px;
+  border: 1px solid #bbb;
+}
+
 
 .comment {
   position: relative;
@@ -240,8 +255,15 @@ div.post {
 
 .comment .number {
   position: absolute;
-  left: -50px;
+  left: -1.8em;
   top: -15px;
-  font-size: 40px;
-  color: #999;
+  font-size: 32px;
+  background-color: #ddd;
+  width: 1em;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
 }

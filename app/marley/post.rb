@@ -61,7 +61,7 @@ module Marley
       directory = directory.first
       return unless directory or !File.exist?(directory)
       file = Dir["#{directory}/*.txt"].first
-      self.new( self.extract_post_info_from(file, options).merge( :comments => Marley::Comment.find_all_by_post_id(id) ) )
+      self.new( self.extract_post_info_from(file, options).merge( :comments => Marley::Comment.ham.find_all_by_post_id(id) ) )
     end
     
     # Returns directories in data directory. Default is published only (no <tt>.draft</tt> in name)

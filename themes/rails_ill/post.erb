@@ -23,11 +23,12 @@
     <div id="comment_added_thanks"><div class="in"><p>Thank you for your comment!</p></div></div>
     <% end %>
     <div class="comment<%= ' spam' if comment.spam? %>" id="comment_<%= comment.id %>">
-      <div class="number"><span class="nodisplay">#</span><%= index.succ %></div>
+      <div class="number"><span class="nodisplay"></span><%= index.succ %></div>
       <div class="message">
         <%= markup h(comment.body) %>
       </div>
       <div class="author">
+				<a href="http://gravatar.com" class='image'><img src="<%= comment.gravatar_url(:size => 40) %>" class='gravatar'/></a>
         <strong>
         <%= comment.url ? "<a href=\"#{h(comment.url)}\">#{h(comment.author)}</a>" : h(comment.author) %>
         </strong> wrote on <%= human_date(comment.created_at) %></div>
@@ -42,16 +43,16 @@
       <form action="/<%= @post.id %>/comments#add_comment" method="post" accept-charset="utf-8">
 
         <label class="required">Your name:</label>
-        <input type="text" class="text" name="author" value="" id="author" />
+        <input type="text" class="text" name="author" value="<%=@comment.try(:author)%>" id="author" />
         <span>(required)</span>
-        <% if  @comment and @comment.errors %><div class="error">Author <%= @comment.errors.on(:author).first %></div><% end %>
+        <% if  @comment and @comment.errors and @comment.errors.on(:author) %><div class="error">Author <%= @comment.errors.on(:author).try(:first) %></div><% end %>
         <br />
         <label class="required">Your e-mail:</label>
-        <input type="text" class="text" name="email" value="" id="email" />
+        <input type="text" class="text" name="email" value="<%=@comment.try(:email)%>" id="email" />
         <span>(required, won't be displayed)</span>
-        <% if  @comment and @comment.errors %>
+        <% if  @comment and @comment.errors and @comment.errors.on(:email) %>
 				<br/>
-				<div class="error">E-Mail <%= @comment.errors.on(:email).first %></div>
+				<div class="error">E-Mail <%= @comment.errors.on(:email).try(:first) %></div>
 				<% end %>
         <br />
 
@@ -61,9 +62,9 @@
 
         <label>Message:</label>
         <textarea name="body" rows="8" cols="40"></textarea>
-        <% if @comment and @comment.errors %>
+        <% if @comment and @comment.errors and @comment.errors.on(:body)%>
 				<br/>
-				<div class="error">Message <%= @comment.errors.on(:body).first if @comment %></div>
+				<div class="error">Message <%= @comment.errors.on(:body).try(:first) if @comment %></div>
 				<% end %>
         <span style="margin-left: 13.5em">(Use Markdown syntax)</span>
         <br />
