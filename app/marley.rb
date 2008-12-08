@@ -11,8 +11,6 @@ require File.join(File.dirname(__FILE__), '..', 'vendor', 'githubber')   # ... g
 # $:.unshift File.dirname(__FILE__) + 'vendor/sinatra/lib'
 # require 'sinatra'
 
-require 'ruby-debug'
-
 MARLEY_ROOT = File.join(File.dirname(__FILE__), '..') unless defined?(MARLEY_ROOT)
 
 CONFIG = YAML.load_file( File.join(MARLEY_ROOT, 'config', 'config.yml') ) unless defined?(CONFIG)
