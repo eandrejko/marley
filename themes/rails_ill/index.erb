@@ -7,8 +7,8 @@
 			(<%= post.comments.size %> <a href="http://<%= hostname %>/<%= post.id %>.html#comments">comments</a>)</div>
 	</div>
   <span class="perex"><%= post.perex %> </span>
-	<div>
-		<%= post.body_html %>
+	<div class='more'>
+		<a href='/<%= post.id %>.html'>read more</a>
 	</div>
 </li>
 <% end %>
