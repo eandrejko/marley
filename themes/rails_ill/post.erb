@@ -45,14 +45,14 @@
         <label class="required">Your name:</label>
         <input type="text" class="text" name="author" value="<%=@comment.try(:author)%>" id="author" />
         <span>(required)</span>
-        <% if  @comment and @comment.errors and @comment.errors.on(:author) %><div class="error">Author <%= @comment.errors.on(:author).try(:first) %></div><% end %>
+        <% if  @comment and @comment.errors and @comment.errors.on(:author) %><div class="error">Author <%= @comment.errors.on(:author) %></div><% end %>
         <br />
         <label class="required">Your e-mail:</label>
         <input type="text" class="text" name="email" value="<%=@comment.try(:email)%>" id="email" />
         <span>(required, won't be displayed)</span>
         <% if  @comment and @comment.errors and @comment.errors.on(:email) %>
 				<br/>
-				<div class="error">E-Mail <%= @comment.errors.on(:email).try(:first) %></div>
+				<div class="error">E-Mail <%= @comment.errors.on(:email) %></div>
 				<% end %>
         <br />
 
@@ -64,7 +64,7 @@
         <textarea name="body" rows="8" cols="40"></textarea>
         <% if @comment and @comment.errors and @comment.errors.on(:body)%>
 				<br/>
-				<div class="error">Message <%= @comment.errors.on(:body).try(:first) if @comment %></div>
+				<div class="error">Message <%= @comment.errors.on(:body) if @comment %></div>
 				<% end %>
         <span style="margin-left: 13.5em">(Use Markdown syntax)</span>
         <br />
