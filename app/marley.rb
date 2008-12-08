@@ -45,7 +45,7 @@ helpers do
   end
   
   def human_date(datetime)
-    datetime.strftime('%d|%m|%Y').gsub(/ 0(\d{1})/, ' \1')
+    datetime.strftime('%B %d %Y').gsub(/ 0(\d{1})/, ' \1')
   end
 
   def rfc_date(datetime)
@@ -73,7 +73,7 @@ end
 # -----------------------------------------------------------------------------
 
 get '/' do
-  @posts = Marley::Post.published
+  @posts = Marley::Post.published(:except => [])
   @page_title = "#{CONFIG['blog']['title']}"
   erb :index
 end

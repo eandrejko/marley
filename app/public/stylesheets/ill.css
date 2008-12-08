@@ -1,0 +1,82 @@
+body {
+  color: #111;
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+}
+
+a:hover {
+  border-bottom: 1px solid;
+}
+
+a.image {
+  border-bottom: none;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.header {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  border-bottom: 2px solid #717273;
+  margin-bottom: 35px;
+	font-variant: normal;
+	font-size: 24px;
+	position: relative;
+}
+
+.header h1 {
+  margin-bottom: 0px;
+  height: 70px;
+}
+
+.header .rss {
+  position: absolute;
+  right: 0;
+  top: 40px;
+}
+
+.rails {
+	font-variant: small-caps;
+	font-size: 60px;
+}
+
+ul.posts {
+  list-style: none;
+}
+
+ul.posts li {
+  margin-left: 10px;
+}
+
+div.post {
+  margin-left: 10px;
+}
+
+.post h1 {
+  font-size: 36px;
+  line-height: 1.0em;
+}
+
+h1 a, a:hover {
+  text-decoration: none;
+  border: none;
+}
+
+.post-date {
+  float: right;
+}
+
+
+.post-header {
+  overflow: hidden;
+  margin-bottom: 30px;
+}

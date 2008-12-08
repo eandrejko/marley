@@ -1,0 +1,16 @@
+<ul class="posts">
+<% @posts.each do |post| %>
+<li class="post">
+  <h1><a href="/<%= post.id %>.html"><%= post.title %></a></h1>
+	<div class='post-header'>
+		<div class='post-date'><%= human_date post.published_on %><br/>
+			(<%= post.comments.size %> <a href="http://<%= hostname %>/<%= post.id %>.html#comments">comments</a>)</div>
+	</div>
+  <span class="perex"><%= post.perex %> </span>
+	<div>
+		<%= post.body_html %>
+	</div>
+</li>
+<% end %>
+</ul>
+
