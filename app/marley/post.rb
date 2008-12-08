@@ -43,8 +43,9 @@ module Marley
     
     def self.find_all(options={})
       options[:except] ||= ['body', 'body_html']
+      options[:limit] ||= 10
       posts = []
-      self.extract_posts_from_directory(options).each do |file|
+      self.extract_posts_from_directory(options)[0..options[:limit]-1].each do |file|
         attributes = self.extract_post_info_from(file, options)
         attributes.merge!( :comments => Marley::Comment.find_all_by_post_id(attributes[:id], :select => ['id']) )
         posts << self.new( attributes )

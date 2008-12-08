@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="/stylesheets/960.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="/stylesheets/ill.css" type="text/css" media="screen" />
   <script src="/javascripts/application.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/javascripts/code_highlighter.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/javascripts/ruby.js" type="text/javascript" charset="utf-8"></script>
 	
 </head>
 
@@ -37,10 +39,47 @@
 		</div>		
 
 		<div class='grid_3 suffix_1 omega'>
-			<!-- sidebar -->
-			<h2>About</h2>
+			<!-- sidebars -->
+			
+			<div class='sidebar'>
+				<h2><img src='/images/flourish-l.gif'/>Posts<img src='/images/flourish-r.gif'/></h2>
+				<% Marley::Post.published.each do |post| %>
+				<a href="/<%= post.id %>.html"><%= post.title %></a><br>
+				<% end %>
+			</div>
+			
+			<div class='sidebar'>
+			<h2><img src='/images/flourish-l.gif'/>About<img src='/images/flourish-r.gif'/></h2>
+			<p>Ruby on Rails, User Experience Design and all the fun that lies in between.
+			This blog is written by Erik Andrejko</p>
+			Contact me:
+			<script language=javascript>
+			<!--
+			var un = "eandrejko";
+			var hn = "gm" + "ail." + "c" + "om";
+			var linktext = un + "@" + hn;
+			document.write("<a href=" + "ma" + "il" + "to:" + un +
+			"@" + hn + ">" + linktext + "</a>")
+			//-->
+			</script>
+			</div>
 		</div>
-		
+		<div class='grid_10 prefix_1 suffix_1'>
+			<div class='footer'>
+			&copy;2008 Erik Andrejko
+			Powered by <a href="http://www.restafari.org/introducing-marley.html">Marley</a> on <a href="http://sinatra.rubyforge.org/">Sinatra</a> on <a href="http://www.ruby-lang.org/en/">Ruby</a>.
+			Contact me:
+			<script language=javascript>
+			<!--
+			var un = "eandrejko";
+			var hn = "gm" + "ail." + "c" + "om";
+			var linktext = un + "@" + hn;
+			document.write("<a href=" + "ma" + "il" + "to:" + un +
+			"@" + hn + ">" + linktext + "</a>")
+			//-->
+			</script>
+			</div>
+		</div>
   </div><!-- /container -->
 
   <% if CONFIG['ga_code'] && Sinatra.env == :production %>

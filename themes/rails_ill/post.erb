@@ -25,14 +25,15 @@
     <div id="comment_added_thanks"><div class="in"><p>Thank you for your comment!</p></div></div>
     <% end %>
     <div class="comment<%= ' spam' if comment.spam? %>" id="comment_<%= comment.id %>">
-      <div class="number"><span class="nodisplay"># </span><%= index.succ %></div>
+      <div class="number"><span class="nodisplay">#</span><%= index.succ %></div>
+      <div class="message">
+        <%= markup h(comment.body) %>
+      </div>
       <div class="author">
         <strong>
         <%= comment.url ? "<a href=\"#{h(comment.url)}\">#{h(comment.author)}</a>" : h(comment.author) %>
         </strong> wrote on <%= human_date(comment.created_at) %>:</div>
-      <div class="message">
-        <%= markup h(comment.body) %>
-      </div>
+
     </div><!-- /comment -->
 
     <% end %>
@@ -50,7 +51,10 @@
         <label class="required">Your e-mail:</label>
         <input type="text" class="text" name="email" value="" id="email" />
         <span>(required, won't be displayed)</span>
-        <% if  @comment and @comment.errors %><div class="error">E-Mail <%= @comment.errors.on(:email).first %></div><% end %>
+        <% if  @comment and @comment.errors %>
+				<br/>
+				<div class="error">E-Mail <%= @comment.errors.on(:email).first %></div>
+				<% end %>
         <br />
 
         <label>Your website:</label>
@@ -59,11 +63,14 @@
 
         <label>Message:</label>
         <textarea name="body" rows="8" cols="40"></textarea>
-        <% if @comment and @comment.errors %><div class="error">Message <%= @comment.errors.on(:body).first if @comment %></div><% end %>
+        <% if @comment and @comment.errors %>
+				<br/>
+				<div class="error">Message <%= @comment.errors.on(:body).first if @comment %></div>
+				<% end %>
         <span style="margin-left: 13.5em">(Use Markdown syntax)</span>
         <br />
 
-        <input class="submit" type="submit" value="Send message &rarr;" accesskey="s" />
+        <input class="submit" type="submit" value="Post Comment &raquo;" accesskey="s" />
       </form>
     <div class="clear">&nbsp;</div>
     </div><!-- /comment_form -->
