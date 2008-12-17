@@ -18,9 +18,11 @@
   <link rel="stylesheet" href="/stylesheets/text.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="/stylesheets/960.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="/stylesheets/ill.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="/stylesheets/zenburn.css" type="text/css" media="screen" />
+	<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js" type="text/javascript" charset="utf-8"></script>
+	
   <script src="/javascripts/application.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/javascripts/code_highlighter.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/javascripts/ruby.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/javascripts/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
 	
 </head>
 
@@ -94,6 +96,10 @@
   pageTracker._trackPageview();
   </script>
   <% end %>
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
 
 </body>
 </html>
