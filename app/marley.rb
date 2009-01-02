@@ -106,7 +106,7 @@ end
 get '/:post_id.html' do
   @post = Marley::Post[ params[:post_id] ]
   throw :halt, [404, not_found ] unless @post
-  @page_title = "#{@post.title} #{CONFIG['blog']['name']}"
+  @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
   erb :post 
 end
 
@@ -124,7 +124,7 @@ post '/:post_id/comments' do
   if @comment.valid?
     redirect "/"+params[:post_id].to_s+'.html?thank_you=#comment_form'
   else
-    @page_title = "#{@post.title} #{CONFIG['blog']['name']}"
+    @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
     erb :post
   end
 end

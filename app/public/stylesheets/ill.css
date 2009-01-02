@@ -272,3 +272,9 @@ pre code {
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
 }
+
+blockquote {
+  margin: 0px auto;
+  width: 90%;
+  font-style: italic;
+}
