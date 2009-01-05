@@ -89,7 +89,7 @@ pre code {
 
 .shebang,
 .diff .addition,
-.comment,
+code .comment,
 .java .annotation,
 .template_comment,
 .pi,
