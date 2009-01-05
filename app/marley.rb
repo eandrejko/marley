@@ -148,6 +148,15 @@ get "/posts/*.jpg" do
   end
 end
 
+get "/posts/*.pdf" do
+  begin
+    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.pdf"))}
+    send_file(File.join(directory, params['splat'].first + ".pdf"), :file_name => File.join(directory, params['splat'].first + ".pdf"), :type => 'application/pdf', :disposition => 'inline')
+  rescue
+    throw :halt, [404, not_found ]
+  end
+end
+
 post '/sync' do
   throw :halt, 404 and return if not CONFIG['github_token'] or CONFIG['github_token'].nil?
   unless params[:token] && params[:token] == CONFIG['github_token']
