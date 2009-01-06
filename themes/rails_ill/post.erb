@@ -16,7 +16,8 @@
   
   <div id="comments">
     
-    <h3>Comments</h3>
+    <h3>Comments <a href="http://<%= hostname %>/<%= @post.id %>/feed" class="image">&nbsp;<img src='/images/rss.gif'/></a></h3>
+		
     
     <% @post.comments.each_with_index do |comment, index| %>
     <% if params[:thank_you] && comment == @post.comments.last %>

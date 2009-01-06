@@ -278,3 +278,8 @@ blockquote {
   width: 90%;
   font-style: italic;
 }
+
+#comments img {
+  display: inline;
+  margin: 0;
+}
