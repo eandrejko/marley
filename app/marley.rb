@@ -83,6 +83,16 @@ class Object
 end
 
 
+def download_file(ext, mime, download = false)
+  begin
+    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.#{ext}"))}
+    send_file(File.join(directory, params['splat'].first + "." + ext), :file_name => File.join(directory, params['splat'].first + "." + ext), :type => mime, :disposition => download ? 'attachment' : 'inline')
+  rescue
+    throw :halt, [404, not_found ]
+  end
+  
+end
+
 # -----------------------------------------------------------------------------
 
 get '/' do
@@ -140,21 +150,19 @@ get '/:post_id/feed' do
 end
 
 get "/posts/*.jpg" do
-  begin
-    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.jpg"))}
-    send_file(File.join(directory, params['splat'].first + ".jpg"), :file_name => File.join(directory, params['splat'].first + ".jpg"), :type => 'image/jpeg', :disposition => 'inline')
-  rescue
-    throw :halt, [404, not_found ]
-  end
+  download_file("jpg","image/jpeg")
 end
 
 get "/posts/*.pdf" do
-  begin
-    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.pdf"))}
-    send_file(File.join(directory, params['splat'].first + ".pdf"), :file_name => File.join(directory, params['splat'].first + ".pdf"), :type => 'application/pdf', :disposition => 'inline')
-  rescue
-    throw :halt, [404, not_found ]
-  end
+  download_file("pdf","application/pdf")
+end
+
+get "/posts/*.mov" do
+  download_file("mov", "video/quicktime")
+end
+
+get "/posts/*.m4v" do
+  download_file("m4v", "video/quicktime", true)
 end
 
 post '/sync' do
