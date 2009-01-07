@@ -150,8 +150,10 @@ div.post {
   padding: 0;
 }
 
+
 pre code {
-  
+  overflow-y: auto;
+  font-size: 0.9em;
 }
 
 .footer {
@@ -199,7 +201,7 @@ pre code {
   { clear: both; }
 #comment_form .submit 
   { float: left;
-    margin-left: 44em;
+    margin-left: 37em;
     padding: 0 1em 0 0.5em; }
 
 #comment_form h3 

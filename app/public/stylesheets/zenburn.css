@@ -19,7 +19,7 @@ pre code {
 .css .class,
 .css .id,
 .lisp .title {
-  color: #DDD6D1;
+  color: #C9672B;
 }
 
 .tag .title {
@@ -32,14 +32,14 @@ pre code {
   color: #DCDCDC;
 }
 
-.number {
+.ruby .number {
   color: #8CD0D3;
 }
 
 .dos .envvar,
 .dos .stream,
 .variable {
-  color: #EFDCBC;
+  color: #B6B7E1;
 }
 
 .dos .flow,
@@ -55,18 +55,25 @@ pre code {
   color: #8F8F8F;
 }
 
+.function .title {
+  color: #E7A65B;
+}
+
 .dos .keyword,
 .python .decorator,
-.class .title, 
-.function .title,
+.class .title,
 .ini .title,
 .diff .header,
 .ruby .class .parent {
-    color: #efef8f;
+    color: #fff;
 }
 
+.ruby .symbol {
+  color: #528DAA;
+}
+
+
 .dos .winutils,
-.ruby .symbol,
 .ruby .string,
 .ruby .instancevar {
   color: #6A8243;
