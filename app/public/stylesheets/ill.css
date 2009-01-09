@@ -137,6 +137,12 @@ div.post {
 
 .sidebar h2 img {
   margin: 0px 3px;
+  display: inline;
+}
+
+.sidebar img {
+  margin: 5px auto;
+  display: block;
 }
 
 .post pre {
