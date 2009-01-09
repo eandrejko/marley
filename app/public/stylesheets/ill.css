@@ -145,6 +145,15 @@ div.post {
   display: block;
 }
 
+.sidebar .qod-author{
+  float: right;
+  margin-top: -15px;
+}
+
+#quote {
+  overflow: hidden;
+}
+
 .post pre {
   border:2px solid #f0f0f0;
   color:#222222;
