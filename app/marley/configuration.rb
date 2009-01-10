@@ -14,6 +14,9 @@ module Marley
     
     DEFAULT_THEME = "default" unless defined?(DEFAULT_THEME)
 
+    TZ = CONFIG['tz'] unless defined?(TZ)    
+    TZ = "CST" unless defined?(TZ)
+
     def self.directory_for_theme(theme_name)
       File.join(THEMES_DIRECTORY, theme_name)
     end

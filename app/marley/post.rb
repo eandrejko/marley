@@ -67,9 +67,18 @@ module Marley
     # Returns directories in data directory. Default is published only (no <tt>.draft</tt> in name)
     def self.load_directories_with_posts(options={})
       if options[:draft]
-        Dir[File.join(Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.sort
+        Dir[File.join(Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| self.after_publish_date(dir)}.sort
       else
-        Dir[File.join(Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir) and not dir.include?('.draft')  }.sort
+        Dir[File.join(Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir) and not dir.include?('.draft')  }.select{|dir| self.after_publish_date(dir)}.sort
+      end
+    end
+    
+    # determines if post with specified publish date should be published
+    def self.after_publish_date(dir)
+      if dir =~ /([a-z]{3}-[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{2})/
+        DateTime.strptime($1 + " " + Configuration::TZ, "%b-%d-%Y-%H-%M %Z") < DateTime.now
+      else
+        return true
       end
     end
     
@@ -95,7 +104,12 @@ module Marley
       post[:id]           = dirname.sub(self.regexp[:id], '\1').sub(/\.draft$/, '')
       post[:title], post[:published_on] = file_content.scan( self.regexp[:title_with_date] ).first
       post[:title]        = file_content.scan( self.regexp[:title] ).first.to_s.strip if post[:title].nil?
-      post[:published_on] = DateTime.parse( post[:published_on] ) rescue File.mtime( File.dirname(file) )
+      post[:published_on] = if dirname =~  /([a-z]{3}-[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{2})/
+                              DateTime.strptime($1 + " " + Configuration::TZ, "%b-%d-%Y-%H-%M %Z")
+                            else
+                              File.mtime( File.dirname(file) )                    
+                            end
+      
 
       post[:perex]        = RDiscount::new(file_content.scan( self.regexp[:perex] ).first.to_s.strip).to_html unless options[:except].include? 'perex' or
                                                                                       not options[:only].include? 'perex'
