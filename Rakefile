@@ -35,6 +35,14 @@ namespace :app do
                                              )
       load( File.join( MARLEY_ROOT, 'config', 'db_create_comments.rb' ) )
     end
+    desc "Create database for top posts"
+    task :create_database_for_top_posts do
+      puts "* Creating top_posts SQLite database in #{Marley::Configuration::DATA_DIRECTORY}/top_posts.db"
+      ActiveRecord::Base.establish_connection( :adapter => 'sqlite3', 
+                                               :database => File.join(Marley::Configuration::DATA_DIRECTORY, 'comments.db')
+                                             )
+      load( File.join( MARLEY_ROOT, 'config', 'db_create_top_posts.rb' ) )
+    end
     task :create_sample_article do
       puts "* Creating sample article"
       FileUtils.cp_r( File.join(MARLEY_ROOT, 'app', 'test', 'fixtures', '001-test-article-one'), Marley::Configuration::DATA_DIRECTORY )

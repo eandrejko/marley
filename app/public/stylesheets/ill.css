@@ -155,14 +155,14 @@ div.post {
 }
 
 .post pre {
-  border:2px solid #f0f0f0;
+  border:2px dashed #f0f0f0;
   color:#222222;
   font-size:100%;
   margin:1.2em 0;
   position:relative;
   text-align:left;
   white-space:pre-wrap;
-  padding: 0;
+  padding: 7px;
 }
 
 
@@ -294,6 +294,14 @@ blockquote {
   margin: 0px auto;
   width: 90%;
   font-style: italic;
+  background: url(/images/quote.gif) top left no-repeat;
+  padding: 5px 0 0 30px;
+}
+
+.caption {
+  margin: -20px auto 30px auto;
+  font-weight: bold;
+  text-align: center;
 }
 
 #comments img {

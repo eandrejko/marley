@@ -19,7 +19,7 @@ CONFIG = YAML.load_file( File.join(MARLEY_ROOT, 'config', 'config.yml') ) unless
 
 # FIXME : There must be a clean way to do this :)
 req_or_load = (Sinatra.env == :development) ? :load : :require
-%w{configuration.rb post.rb comment.rb}.each do |f|
+%w{configuration.rb post.rb comment.rb top_post.rb}.each do |f|
   send(req_or_load, File.join(File.dirname(__FILE__), 'marley', f) )
 end
 
@@ -116,6 +116,11 @@ end
 get '/:post_id.html' do
   @post = Marley::Post[ params[:post_id] ]
   throw :halt, [404, not_found ] unless @post
+  
+  # record this in top posts
+  tp = Marley::TopPost.find_or_create_by_post_id(params[:post_id])
+  tp.increment!(:count)
+  
   @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
   erb :post 
 end
