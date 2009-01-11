@@ -45,12 +45,12 @@
 
         <label class="required">Your name:</label>
         <input type="text" class="text" name="author" value="<%=@comment.try(:author)%>" id="author" />
-        <span>(required)</span>
+        <span class='hint'>(required)</span>
         <% if  @comment and @comment.errors and @comment.errors.on(:author) %><div class="error">Author <%= @comment.errors.on(:author) %></div><% end %>
         <br />
         <label class="required">Your e-mail:</label>
         <input type="text" class="text" name="email" value="<%=@comment.try(:email)%>" id="email" />
-        <span>(required, won't be displayed)</span>
+        <span class='hint'>(required, won't be displayed)</span>
         <% if  @comment and @comment.errors and @comment.errors.on(:email) %>
 				<br/>
 				<div class="error">E-Mail <%= @comment.errors.on(:email) %></div>
@@ -67,8 +67,23 @@
 				<br/>
 				<div class="error">Message <%= @comment.errors.on(:body) if @comment %></div>
 				<% end %>
-        <span style="margin-left: 13.5em">(Use Markdown syntax)</span>
+        <span  class='hint' style="margin-left: 13.5em">(Use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown syntax</a>)</span>
         <br />
+
+				<div class='preview' style='display:none;'>
+					<h3>Comment Preview <img src='/images/spinner.gif' id="preview-loading" style='display: none;'/></h3>
+			    <div class="comment">
+			      <div class="number"><span class="nodisplay"></span><%= @post.comments.length + 1 %></div>
+			      <div class="message">
+			      </div>
+			      <div class="author">
+							<a href="http://gravatar.com" class='image'><img src="http://gravatar.com/avatar/xxx?s=40" class='gravatar'/></a>
+			        <strong>
+			        </strong> wrote on <span class='comment-date'></span></div>
+
+			    </div><!-- /comment -->
+				</div>
+
 
         <input class="submit" type="submit" value="Post Comment &raquo;" accesskey="s" />
       </form>

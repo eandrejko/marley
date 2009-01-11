@@ -204,7 +204,7 @@ pre code {
   	padding-top: 0.5em; }
 #comment_form label.required
   { font-weight: bold; }
-#comment_form span
+#comment_form span.hint
   { color: #9d9d9d;
     font-size: 80%;
     padding: 0.5em 0 0 0.5em;
@@ -307,4 +307,9 @@ blockquote {
 #comments img {
   display: inline;
   margin: 0;
+}
+
+#preview-loading {
+  position: relative;
+  top: 4px;
 }

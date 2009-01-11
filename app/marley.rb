@@ -184,4 +184,10 @@ get '/about' do
   "<p style=\"font-family:sans-serif\">I'm running on Sinatra version " + Sinatra::VERSION + '</p>'
 end
 
+# for comment previews
+# returns markdown formatted text
+post '/preview' do
+  RDiscount::new(params[:body]).to_html
+end
+
 # -----------------------------------------------------------------------------
