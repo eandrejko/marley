@@ -7,6 +7,8 @@ require 'rdiscount'        # ... convert Markdown into HTML in blazing speed
 require File.join(File.dirname(__FILE__), '..', 'vendor', 'akismetor')   # ... disable comment spam
 require File.join(File.dirname(__FILE__), '..', 'vendor', 'githubber')   # ... get repo info
 
+require 'ruby-debug'
+
 # ... or alternatively, run Sinatra on edge ...
 # $:.unshift File.dirname(__FILE__) + 'vendor/sinatra/lib'
 # require 'sinatra'
@@ -85,8 +87,9 @@ end
 
 def download_file(ext, mime, download = false)
   begin
-    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{params['splat']}.#{ext}"))}
-    send_file(File.join(directory, params['splat'].first + "." + ext), :file_name => File.join(directory, params['splat'].first + "." + ext), :type => mime, :disposition => download ? 'attachment' : 'inline')
+    name = params[:splat].first if /^[A-Z|a-z|0-9|_|-]+$/.match(params[:splat].first)
+    directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{name}.#{ext}"))}
+    send_file(File.join(directory, name + "." + ext), :file_name => File.join(directory, name + "." + ext), :type => mime, :disposition => download ? 'attachment' : 'inline')
   rescue
     throw :halt, [404, not_found ]
   end
