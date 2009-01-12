@@ -101,7 +101,7 @@ module Marley
       full_body     = file_content.sub( self.regexp[:title], '').strip
       post          = Hash.new
 
-      post[:id]           = dirname.sub(self.regexp[:id], '\1').sub(/\.draft$/, '')
+      post[:id]           = dirname.sub(self.regexp[:id], '\1').sub(/\.draft$/, '').sub(/\.([a-z]{3}-[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{2})/, '')
       post[:title], post[:published_on] = file_content.scan( self.regexp[:title_with_date] ).first
       post[:title]        = file_content.scan( self.regexp[:title] ).first.to_s.strip if post[:title].nil?
       post[:published_on] = if dirname =~  /([a-z]{3}-[0-9]{1,2}-[0-9]{4}-[0-9]{2}-[0-9]{2})/
