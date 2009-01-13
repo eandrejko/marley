@@ -38,6 +38,12 @@ module Marley
     def permalink
       "/#{id}.html"
     end
+    
+    # related posts
+    # for now just give the top posts
+    def related
+      TopPost.short_top
+    end
             
     private
     

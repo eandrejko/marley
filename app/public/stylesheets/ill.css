@@ -131,7 +131,8 @@ div.post {
 .sidebar h2 {
   margin: 0px auto 10px auto;
   text-align: center;
-  text-transform: uppercase;
+/*  text-transform: uppercase;*/
+  font-variant: small-caps;
   font-size: 20px;
 }
 
@@ -312,4 +313,34 @@ blockquote {
 #preview-loading {
   position: relative;
   top: 4px;
+}
+
+.plain {
+  text-decoration: none;
+  border: none;
+}
+
+.related {
+  padding: 10px 0 10px 0;
+}
+
+.related a {
+  margin-right: 15px;
+}
+
+.related img {
+  display: inline;
+  position: relative;
+  top: 2px;
+  margin: 3px;
+}
+
+.related h3 {
+  border-bottom: 1px solid #000;
+  font-variant: small-caps;
+  font-size: 1.6em;
+}
+
+.related h3 img{
+  margin-left: -25px;
 }
