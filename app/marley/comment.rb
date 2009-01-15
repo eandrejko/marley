@@ -12,6 +12,7 @@ module Marley
 
     named_scope :recent,   :order => 'created_at DESC', :limit => 50
     named_scope :ham, :conditions => { :spam => false }
+    named_scope :with_post_id, lambda {|i| {:conditions => [ 'post_id = ?', i] }}
 
     validates_presence_of :author, :email, :body, :post_id
 
@@ -20,6 +21,10 @@ module Marley
     def gravatar_url(options = {})
       options[:size] ||= 40
       "http://gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email) + "?s=" + options[:size].to_s
+    end
+    
+    def self.cache_key
+      self.maximum(:created_at).to_i.to_s
     end
     
     private

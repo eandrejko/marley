@@ -53,6 +53,15 @@
 			</div>
 
 			<div class='sidebar'>
+				<h2><img src='/images/flourish-l.gif'/>Screencasts<img src='/images/flourish-r.gif'/></h2>
+				<ul>
+				<% Marley::Post.screencasts.each do |post| %>
+				<li><a href="/<%= post.id %>.html"><%= Marley::Post.find_one(post.id, :only => ['title']).title %></a></li>
+				<% end %>
+				</ul>
+			</div>
+
+			<div class='sidebar'>
 				<h2><img src='/images/flourish-l.gif'/>Recent<img src='/images/flourish-r.gif'/></h2>
 				<ul>
 				<% Marley::Post.published.each do |post| %>

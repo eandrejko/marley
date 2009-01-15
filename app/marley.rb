@@ -99,7 +99,7 @@ end
 get '/' do
   @posts = Marley::Post.published(:except => [])
   @page_title = "#{CONFIG['blog']['title']}"
-  erb :index
+  Marley::Cache.cache(Marley::Post.cache_key) {erb :index}
 end
 
 get '/feed' do
@@ -123,7 +123,7 @@ get '/:post_id.html' do
   tp.increment!(:count)
   
   @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
-  erb :post 
+  Marley::Cache.cache(@post.cache_key) {erb :post}
 end
 
 post '/:post_id/comments' do

@@ -56,6 +56,25 @@ module Marley
         distances[b.id] <=> distances[a.id]
       end[0..limit-1]
     end
+    
+    def self.screencasts(limit = 5)
+      self.find_all(:limit => 1000).select {|p| p.id =~ /screencast/i || p.title =~ /screencast/i}[0..limit-1]
+    end
+    
+    # Caching keys
+    def cache_key
+      "posts/" + Marley::Post.layout_cache_key + "/" + Marley::Comment.ham.cache_key + "/" + updated_on.to_i.to_s
+    end
+    
+    # for collection of posts
+    def self.cache_key
+      "posts/" + self.find_all.map {|p| p.cache_key}.sort.last
+    end
+    
+    def self.layout_cache_key
+      theme_directory = Marley::Configuration.directory_for_theme(CONFIG['theme'] || Marley::Configuration::DEFAULT_THEME)
+      Dir[File.join(theme_directory, '*')].map {|f| File.mtime(f)  }.sort.last.to_i.to_s
+    end
             
     private
     

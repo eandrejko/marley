@@ -95,6 +95,26 @@ class MarleyTest < Test::Unit::TestCase
     assert_not_nil p.related
   end
 
+  def test_post_cache_key
+    p = Marley::Post.find_one("test-article")
+    assert_not_nil p.cache_key
+    key = p.cache_key
+    post_it '/test-article/comments', default_comment_attributes
+    assert key != Marley::Post.find_one("test-article").cache_key
+  end
+  
+  def test_post_collection_cache_key
+    assert_not_nil Marley::Post.cache_key
+    key = Marley::Post.cache_key
+    post_it '/test-article/comments', default_comment_attributes
+    assert key != Marley::Post.cache_key
+  end
+  
+  def test_screencasts
+    assert_not_nil Marley::Post.screencasts
+    assert Marley::Post.screencasts.length > 0
+  end
+
   private
 
   def default_comment_attributes
