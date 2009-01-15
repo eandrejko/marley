@@ -1,4 +1,7 @@
 require 'date'
+require 'rdiscount'        # ... convert Markdown into HTML in blazing speed
+require  File.join(File.dirname(__FILE__),'vector')
+require  File.join(File.dirname(__FILE__),'cache')
 
 module Marley
 
@@ -6,7 +9,7 @@ module Marley
   # Data source is Marley::Configuration::DATA_DIRECTORY (set in <tt>config.yml</tt>)
   class Post
     
-    attr_reader :id, :title, :perex, :body, :body_html, :full_body_html, :meta, :published_on, :updated_on, :published, :comments
+    attr_reader :id, :title, :perex, :body, :body_html, :full_body, :full_body_html, :meta, :published_on, :updated_on, :published, :comments
     
     # comments are referenced via +has_many+ in Comment
     
@@ -40,9 +43,18 @@ module Marley
     end
     
     # related posts
-    # for now just give the top posts
-    def related
-      TopPost.short_top
+    # turn each of the other posts into a vector and then sort by inner product
+    def related(limit = 5)
+      v = Marley::Vector.from_string(full_body)
+      others = Post.find_all(:except => []).reject{|x| x.id == self.id}
+      distances = {}
+      others.each do |x|
+        key = id < x.id ? "distance-#{id}-#{x.id}" : "distance-#{x.id}-#{id}"
+        distances[x.id] = Marley::Cache.cache(key){v * Marley::Vector.from_string(x.full_body)}
+      end
+      others.sort do |a,b|
+        distances[b.id] <=> distances[a.id]
+      end[0..limit-1]
     end
             
     private
@@ -123,7 +135,11 @@ module Marley
                                                                                       not options[:only].include? 'body'
       post[:body_html]    = RDiscount::new( body ).to_html                            unless options[:except].include? 'body_html' or
                                                                                       not options[:only].include? 'body_html'
+
+      
       post[:full_body_html] = RDiscount::new( full_body ).to_html                            unless options[:except].include? 'body_html' or
+                                                                                      not options[:only].include? 'body_html'
+      post[:full_body]   =  full_body                            unless options[:except].include? 'body_html' or
                                                                                       not options[:only].include? 'body_html'
       post[:meta]         = ( meta_content ) ? YAML::load( meta_content.scan( self.regexp[:meta]).to_s ) : 
                                                nil unless options[:except].include? 'meta' or not options[:only].include? 'meta'
@@ -140,7 +156,7 @@ module Marley
         :title => /^#\s*(.*)\s+$/,
         :title_with_date => /^#\s*(.*)\s+\(([0-9\/]+)\)$/,
         :published_on => /.*\s+\(([0-9\/]+)\)$/,
-        :perex => /^([^\#\n]+\n)$/, 
+        :perex => /^\s*\#\s*.*$([^#]+)\s*/, 
         :meta  => /^\{\{\n(.*)\}\}\n$/mi # Multiline Regexp 
       } 
     end

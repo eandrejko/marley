@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rack'
 require 'sinatra'
 require 'sinatra/test/unit'
+require 'ruby-debug'
 
 # Require application file
 require '../marley'
@@ -32,6 +33,7 @@ end
 File.delete('./fixtures/test.db') if File.exists?('./fixtures/test.db')
 ActiveRecord::Base.establish_connection( :adapter => 'sqlite3', :database => './fixtures/test.db')
 load File.join(MARLEY_ROOT, 'config', 'db_create_comments.rb' )
+load File.join(MARLEY_ROOT, 'config', 'db_create_top_posts.rb' )
 
 
 class MarleyTest < Test::Unit::TestCase
@@ -44,46 +46,42 @@ class MarleyTest < Test::Unit::TestCase
     get_it '/'
     assert @response.status == 200
   end
-
+  
   def test_should_show_article_page
     get_it '/test-article.html'
     # p @response.body
     assert @response.status == 200
     assert @response.body =~ Regexp.new( 
-           Regexp.escape("<h1>\n    This is the test article one\n    <span class=\"meta\">\n      23|12|2050") ),
+           Regexp.escape("<h1>\n    This is the test article one\n    <span class=\"meta\">\n") ),
            "HTML should contain valid <h1> title for post"
   end
-
+  
   def test_should_send_404
     get_it '/i-am-not-here.html'
     assert @response.status == 404
   end
-
+  
   def test_should_create_comment
     comment_count = Marley::Comment.count
     post_it '/test-article/comments', default_comment_attributes
     assert @response.status == 302
     assert Marley::Comment.count == comment_count + 1
   end
-
+  
   def test_should_fix_url_on_comment_create
     post_it '/test-article/comments', default_comment_attributes.merge(:url => 'www.example.com')
     assert_equal 'http://www.example.com', Marley::Comment.last.url
   end
-
+  
   def test_should_NOT_fix_blank_url_on_comment_create
     comment_count = Marley::Comment.count
     post_it '/test-article/comments', default_comment_attributes.merge(:url => '')
     assert_equal '', Marley::Comment.last.url
   end
 
+
   def test_should_show_feed_for_index
     get_it '/feed'
-    assert @response.status == 200
-  end
-
-  def test_should_show_feed_for_article
-    get_it '/test-article/feed'
     assert @response.status == 200
   end
 
@@ -91,15 +89,10 @@ class MarleyTest < Test::Unit::TestCase
     get_it '/feed/comments'
     assert @response.status == 200
   end
-
-  def test_articles_should_have_proper_published_on_dates
-    get_it '/'
-    # p @response.body
-    assert @response.status == 200
-    assert @response.body =~ Regexp.new(Regexp.escape("<small>23|12|2050 &mdash;</small>")),
-                             "HTML should contain proper date for post one"
-    assert @response.body =~ Regexp.new(Regexp.escape("<small>#{File.mtime(File.expand_path('./fixtures/002-test-article-two/')).strftime('%d|%m|%Y')} &mdash;</small>")),
-                             "HTML should contain proper date for post two"
+  
+  def test_related
+    p = Marley::Post.find_one("test-article")
+    assert_not_nil p.related
   end
 
   private

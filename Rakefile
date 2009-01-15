@@ -75,6 +75,12 @@ namespace :data do
     # TODO : use Git
     exec "cap data:sync"
   end
+  
+  task :precache do
+    Marley::Post.find_all(:except => []).each do |p|
+      p.related
+    end
+  end
     
 end
 

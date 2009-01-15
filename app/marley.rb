@@ -19,7 +19,7 @@ CONFIG = YAML.load_file( File.join(MARLEY_ROOT, 'config', 'config.yml') ) unless
 
 # FIXME : There must be a clean way to do this :)
 req_or_load = (Sinatra.env == :development) ? :load : :require
-%w{configuration.rb post.rb comment.rb top_post.rb}.each do |f|
+%w{configuration.rb post.rb comment.rb top_post.rb vector.rb cache.rb}.each do |f|
   send(req_or_load, File.join(File.dirname(__FILE__), 'marley', f) )
 end
 
