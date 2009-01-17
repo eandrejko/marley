@@ -23,6 +23,17 @@ req_or_load = (Sinatra.env == :development) ? :load : :require
   send(req_or_load, File.join(File.dirname(__FILE__), 'marley', f) )
 end
 
+
+# add caching to Sinatra
+class Sinatra::EventContext
+  include CacheableEventContext
+end
+
+class Sinatra::Application
+  include CacheableApplication
+end
+
+
 # -----------------------------------------------------------------------------
 
 configure do
@@ -83,6 +94,12 @@ class Object
 end
 
 
+
+# caching extension
+# class Sinatra::Event
+#   include CacheableEvent
+# end
+
 def download_file(ext, mime, download = false)
   begin
     name = params[:splat].first if /^[A-Z|a-z|0-9|_|-]+$/.match(params[:splat].first)
@@ -96,10 +113,11 @@ end
 
 # -----------------------------------------------------------------------------
 
-get '/' do
+
+get '/', :cache_key => Marley::Post.cache_key do
   @posts = Marley::Post.published(:except => [])
   @page_title = "#{CONFIG['blog']['title']}"
-  Marley::Cache.cache(Marley::Post.cache_key) {erb :index}
+  erb :index
 end
 
 get '/feed' do
@@ -123,7 +141,7 @@ get '/:post_id.html' do
   tp.increment!(:count)
   
   @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
-  Marley::Cache.cache(@post.cache_key) {erb :post}
+  Sinatra::Cache.cache(@post.cache_key) {erb :post}
 end
 
 post '/:post_id/comments' do
@@ -171,24 +189,13 @@ get "/posts/*.m4v" do
   download_file("m4v", "video/quicktime", true)
 end
 
-post '/sync' do
-  throw :halt, 404 and return if not CONFIG['github_token'] or CONFIG['github_token'].nil?
-  unless params[:token] && params[:token] == CONFIG['github_token']
-    throw :halt, [500, "You did wrong.\n"] and return
-  else
-    # Synchronize articles in data directory to Github repo
-    system "cd #{CONFIG['data_directory']}; git pull origin master"
-  end
+get "/posts/*.rb" do
+  download_file("rb", "text/plain", true)
 end
 
 get '/about' do
   "<p style=\"font-family:sans-serif\">I'm running on Sinatra version " + Sinatra::VERSION + '</p>'
 end
 
-# for comment previews
-# returns markdown formatted text
-post '/preview' do
-  RDiscount::new(params[:body]).to_html
-end
 
 # -----------------------------------------------------------------------------

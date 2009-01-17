@@ -50,7 +50,7 @@ module Marley
       distances = {}
       others.each do |x|
         key = id < x.id ? "distance-#{id}-#{x.id}" : "distance-#{x.id}-#{id}"
-        distances[x.id] = Marley::Cache.cache(key){v * Marley::Vector.from_string(x.send(using))}
+        distances[x.id] = Sinatra::Cache.cache(key){v * Marley::Vector.from_string(x.send(using))}
       end
       others.sort do |a,b|
         distances[b.id] <=> distances[a.id]
