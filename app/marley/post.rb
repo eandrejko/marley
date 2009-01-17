@@ -44,17 +44,17 @@ module Marley
     
     # related posts
     # turn each of the other posts into a vector and then sort by inner product
-    def related(limit = 5)
-      v = Marley::Vector.from_string(full_body)
+    def related(limit = 5, using = 'title')
+      v = Marley::Vector.from_string(send(using))
       others = Post.find_all(:except => []).reject{|x| x.id == self.id}
       distances = {}
       others.each do |x|
         key = id < x.id ? "distance-#{id}-#{x.id}" : "distance-#{x.id}-#{id}"
-        distances[x.id] = Marley::Cache.cache(key){v * Marley::Vector.from_string(x.full_body)}
+        distances[x.id] = Marley::Cache.cache(key){v * Marley::Vector.from_string(x.send(using))}
       end
       others.sort do |a,b|
         distances[b.id] <=> distances[a.id]
-      end[0..limit-1]
+      end.select{|x| distances[x.id] > 0}[0..limit-1]
     end
     
     def self.screencasts(limit = 5)
