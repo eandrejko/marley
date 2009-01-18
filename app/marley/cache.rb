@@ -37,7 +37,7 @@ module CacheableEvent
         # replace the block with another block that can be cached
         def wrap_block(key,block)
           Proc.new do
-            Sinatra::Cache.cache(key + "/" + params.to_a.join("/")) { instance_eval(block) }
+            Sinatra::Cache.cache(key + "/" + params.to_a.join("/")) { instance_eval(&block) }
           end
         end
         @block = wrap_block(options[:cache_key], block)

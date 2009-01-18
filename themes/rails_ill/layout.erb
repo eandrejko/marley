@@ -47,7 +47,7 @@
 				<h2><img src='/images/flourish-l.gif'/>Popular<img src='/images/flourish-r.gif'/></h2>
 				<ul>
 				<% Marley::TopPost.top.each do |post| %>
-				<li><a href="/<%= post.post_id %>.html"><%= Marley::Post.find_one(post.post_id, :only => ['title']).title %></a></li>
+				<li><a href="/<%= post.post_id %>.html"><%= Marley::Post.find_one(post.post_id, :only => ['title']).title rescue nil %></a></li>
 				<% end %>
 				</ul>
 			</div>
