@@ -7,8 +7,6 @@ require 'rdiscount'        # ... convert Markdown into HTML in blazing speed
 require File.join(File.dirname(__FILE__), '..', 'vendor', 'akismetor')   # ... disable comment spam
 require File.join(File.dirname(__FILE__), '..', 'vendor', 'githubber')   # ... get repo info
 
-require 'ruby-debug'
-
 # ... or alternatively, run Sinatra on edge ...
 # $:.unshift File.dirname(__FILE__) + 'vendor/sinatra/lib'
 # require 'sinatra'
