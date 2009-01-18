@@ -22,45 +22,27 @@ module Sinatra
   end
 end
 
-module CacheableEventContext
-  
+module CacheableEvent
   def self.included(base)
-    base.send :include, CacheableEventContext::InstanceMethods
+    base.send :include, CacheableEvent::InstanceMethods
     base.class_eval do
-      alias_method :_instance_eval_without_caching, :instance_eval unless method_defined?(:_instance_eval_without_caching)
-      alias_method :instance_eval, :_instance_eval_with_caching      
+      alias_method :_invoke_without_caching, :invoke unless method_defined?(:_invoke_without_caching)
+      alias_method :invoke, :_invoke_with_caching   
     end
   end
   
   module InstanceMethods
-    def _instance_eval_with_caching(*args, &block)
-      if block && block.instance_variable_get("@cache_key")
-        key = block.instance_variable_get("@cache_key") + "/" + params.to_a.join("-")
-        Sinatra::Cache.cache(key) do 
-          _instance_eval_without_caching(*args, &block)
-        end
-      else
-        _instance_eval_without_caching(*args, &block)
-      end
-    end
-  end
-end
-
-module CacheableApplication
-  def self.included(base)
-    base.send :include, CacheableApplication::InstanceMethods
-    base.class_eval do
-      alias_method :_get_without_caching, :get unless method_defined?(:_get_without_caching)
-      alias_method :get, :_get_with_caching   
-    end
-  end
-  
-  module InstanceMethods
-    def _get_with_caching(path, options={}, &b)
+    def _invoke_with_caching(*args)
       if options[:cache_key]
-        b.instance_variable_set("@cache_key", options[:cache_key])
+        # replace the block with another block that can be cached
+        def wrap_block(key,block)
+          Proc.new do
+            Sinatra::Cache.cache(key + "/" + params.to_a.join("/")) { instance_eval(block) }
+          end
+        end
+        @block = wrap_block(options[:cache_key], block)
       end
-      _get_without_caching(path, options, &b)
+      _invoke_without_caching(*args)
     end
   end
   
