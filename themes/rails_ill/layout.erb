@@ -7,8 +7,7 @@
 
 	<title><%= h(@page_title) %></title>
 
-  <link href="http://<%= hostname %>/feed" rel="alternate" title="Feed for <%= h(CONFIG['blog']['title']) %>" type="application/atom+xml" />
-  <link href="http://<%= hostname %>/feed/comments" rel="alternate" title="Comments for <%= h(CONFIG['blog']['title']) %>" type="application/atom+xml" />
+  <link href="http://feeds.feedburner.com/railsillustrated/HCTH" rel="alternate" title="Feed for <%= h(CONFIG['blog']['title']) %>" type="application/atom+xml" />
   <% if @post %>
   <link href="http://<%= hostname %>/<%= @post.id %>/feed" rel="alternate" title="Feed for comments on article &ldquo;<%= h(@post.title) %>&rdquo; <%= h(CONFIG['blog']['name']) %>" type="application/atom+xml" />
   <% end %>
@@ -33,7 +32,7 @@
 			<div class='header'>
 				<h1><a href='/'><span class='rails'>Rails</span> Illustrated</a></h1>
 				Rails, Web Design and the User Experience
-				<a href='/feed' class='image'><img src='/images/rss_large.gif' class='rss'/></a>
+				<a href='http://feeds.feedburner.com/railsillustrated/HCTH' class='image'><img src='/images/rss_large.gif' class='rss'/></a>
 			</div>
 		</div>
 		<div class='grid_7 prefix_1 alpha'>
