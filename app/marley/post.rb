@@ -3,8 +3,6 @@ require 'rdiscount'        # ... convert Markdown into HTML in blazing speed
 require  File.join(File.dirname(__FILE__),'vector')
 require  File.join(File.dirname(__FILE__),'cache')
 
-require 'ruby-debug'
-
 module Marley
 
   # = Articles

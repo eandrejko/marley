@@ -104,7 +104,7 @@ end
 # -----------------------------------------------------------------------------
 
 
-get '/' do
+get '/', :cache_key => Marley::Post.cache_key do
   @posts = Marley::Post.published(:except => [])
   @page_title = "#{CONFIG['blog']['title']}"
   erb :index
@@ -192,7 +192,7 @@ get '/:name/' do
   @posts = Marley::Post.send(params[:name])
   throw :halt, [404, not_found ] unless @posts
   @page_title = "#{CONFIG['blog']['title']} #{params[:name]}"
-  erb :index
+  Sinatra::Cache.cache(Marley::Post.cache_key) {erb :index}
 end
 
 
