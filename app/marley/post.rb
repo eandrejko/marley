@@ -3,11 +3,16 @@ require 'rdiscount'        # ... convert Markdown into HTML in blazing speed
 require  File.join(File.dirname(__FILE__),'vector')
 require  File.join(File.dirname(__FILE__),'cache')
 
+require 'ruby-debug'
+
 module Marley
 
   # = Articles
   # Data source is Marley::Configuration::DATA_DIRECTORY (set in <tt>config.yml</tt>)
   class Post
+    
+    # named finders
+    @@finders = %w(screencasts)
     
     attr_reader :id, :title, :perex, :body, :body_html, :full_body, :full_body_html, :meta, :published_on, :updated_on, :published, :comments
     
@@ -57,8 +62,19 @@ module Marley
       end.select{|x| distances[x.id] > 0}[0..limit-1]
     end
     
-    def self.screencasts(limit = 5)
-      self.find_all(:limit => 1000).select {|p| p.id =~ /screencast/i || p.title =~ /screencast/i}[0..limit-1]
+    def self.named_finder(name, limit = 5)
+      if @@finders.include?(name)
+        name = name.gsub("_"," ").gsub(/s$/,'') # easy de-pluralize
+        self.find_all(:limit => limit, :except => [], :matching => name)
+      else
+        nil
+      end
+    end
+    
+    # named finders
+    def self.method_missing(name, *args)
+      name = name.to_s
+      self.named_finder(name, *args)
     end
     
     # Caching keys
@@ -82,10 +98,14 @@ module Marley
       options[:except] ||= ['body', 'body_html']
       options[:limit] ||= 15
       posts = []
-      self.extract_posts_from_directory(options).reverse[0..options[:limit]-1].each do |file|
+      self.extract_posts_from_directory(options).reverse.each do |file|
+        break if posts.length == options[:limit]
+        matching = options[:matching]
         attributes = self.extract_post_info_from(file, options)
-        attributes.merge!( :comments => Marley::Comment.ham.find_all_by_post_id(attributes[:id], :select => ['id']) )
-        posts << self.new( attributes )
+        if matching.nil? || (attributes[:title] =~ /#{matching}/i || attributes[:id] =~ /#{matching}/i)
+          attributes.merge!( :comments => Marley::Comment.ham.find_all_by_post_id(attributes[:id], :select => ['id']) )
+          posts << self.new( attributes )
+        end
       end
       return posts
     end

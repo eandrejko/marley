@@ -57,6 +57,7 @@
 				<% Marley::Post.screencasts.each do |post| %>
 				<li><a href="/<%= post.id %>.html"><%= Marley::Post.find_one(post.id, :only => ['title']).title %></a></li>
 				<% end %>
+				<li class='right'><a href='/screencasts/'>more screencasts</a></li>
 				</ul>
 			</div>
 

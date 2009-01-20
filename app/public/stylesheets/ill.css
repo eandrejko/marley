@@ -344,3 +344,7 @@ blockquote {
 .related h3 img{
   margin-left: -25px;
 }
+
+li.right {
+  text-align: right;
+}
