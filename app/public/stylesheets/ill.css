@@ -325,7 +325,7 @@ blockquote {
 }
 
 .related a {
-  margin-right: 15px;
+/*  margin-right: 15px;*/
 }
 
 .related img {
@@ -347,4 +347,17 @@ blockquote {
 
 li.right {
   text-align: right;
+}
+
+.bottom-subscribe {
+  margin-top: -15px;
+  margin-bottom: 0px;
+  text-align: right;
+  position: relative;
+  top: -2.0em;
+}
+
+.bottom-subscribe img {
+  position: relative;
+  top: 5px;
 }

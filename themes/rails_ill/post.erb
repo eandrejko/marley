@@ -15,7 +15,11 @@
   </div><!-- /body -->
 
 	<div class='related'>
-		<h3><img src='/images/flourish-l.gif'/>Possibly Related</h3>
+		
+		<h3><img src='/images/flourish-l.gif'/>More from Rails Illustrated</h3>
+		<div class='bottom-subscribe'>		
+			<a href='http://feeds.feedburner.com/railsillustrated/HCTH' class='image'><img src='/images/rss_large.gif' class='rss' style="width: 15px; height: 15px;"/></a><a href='http://feeds.feedburner.com/railsillustrated/HCTH'>subscribe to the RSS feed</a>
+		</div>
 		<ul>
 		<% @post.related.each do |post| %>
 			<li><a href="/<%= post.id %>.html"><%= Marley::Post.find_one(post.id, :only => ['title']).title %></a>

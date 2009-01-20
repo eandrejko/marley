@@ -127,8 +127,13 @@ get '/:post_id.html' do
   throw :halt, [404, not_found ] unless @post
   
   # record this in top posts
-  tp = Marley::TopPost.find_or_create_by_post_id(params[:post_id])
-  tp.increment!(:count)
+  begin
+    tp = Marley::TopPost.find_or_create_by_post_id(params[:post_id])
+    tp.increment!(:count)
+  rescue
+    # database is locked, ignore it
+    # TODO put correct exception here
+  end
   
   @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
   Sinatra::Cache.cache(@post.cache_key) {erb :post}
