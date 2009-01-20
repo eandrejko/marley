@@ -6,6 +6,7 @@ module Marley
 
     ActiveRecord::Base.establish_connection( :adapter => 'sqlite3', :database => File.join(Configuration::DATA_DIRECTORY, 'comments.db') )
 
+    named_scope :top_limited, lambda { |i| {:order => 'count DESC', :limit => i}}
     named_scope :top, :order => 'count DESC', :limit => 5
     named_scope :short_top, :order => 'count DESC', :limit => 3
   end

@@ -187,12 +187,19 @@ get '/about' do
   "<p style=\"font-family:sans-serif\">I'm running on Sinatra version " + Sinatra::VERSION + '</p>'
 end
 
+get '/popular/', :cache_key => Marley::Post.cache_key("popular") do
+  @posts = Marley::Post.popular
+  throw :halt, [404, not_found ] unless @posts
+  @page_title = "#{CONFIG['blog']['title']} #{params[:name]}"
+  erb :index  
+end
+
 # named finders
 get '/:name/' do
   @posts = Marley::Post.send(params[:name])
   throw :halt, [404, not_found ] unless @posts
   @page_title = "#{CONFIG['blog']['title']} #{params[:name]}"
-  Sinatra::Cache.cache(Marley::Post.cache_key) {erb :index}
+  Sinatra::Cache.cache(Marley::Post.cache_key(params[:name])) {erb :index}
 end
 
 

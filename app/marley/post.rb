@@ -35,6 +35,11 @@ module Marley
       end
       alias :find :[] # For +belongs_to+ in Comment
 
+      def popular(options = {})
+        options[:limited] ||= 15
+        Marley::TopPost.top_limited(options[:limited]).map {|p| self[p.post_id]}
+      end
+
     end
     
     def categories
@@ -81,8 +86,8 @@ module Marley
     end
     
     # for collection of posts
-    def self.cache_key
-      "posts/" + self.find_all.map {|p| p.cache_key}.join("-")
+    def self.cache_key(name = "")
+      "posts/#{name}" + self.find_all.map {|p| p.cache_key}.join("-")
     end
     
     def self.layout_cache_key
