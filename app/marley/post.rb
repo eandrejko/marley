@@ -87,7 +87,7 @@ module Marley
     
     # for collection of posts
     def self.cache_key(name = "")
-      "posts/#{name}" + self.find_all.map {|p| p.cache_key}.join("-")
+      "posts/#{name}/" + Marley::Post.layout_cache_key + "/" + self.find_all.map {|p| p.updated_on.to_i}.max.to_s
     end
     
     def self.layout_cache_key
