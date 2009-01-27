@@ -136,7 +136,7 @@ get '/:post_id.html' do
   end
   
   @page_title = "#{@post.title} - #{CONFIG['blog']['name']}"
-  Sinatra::Cache.cache(@post.cache_key) {erb :post}
+  Sinatra::Cache.cache(@post.cache_key + "/" + params.to_s) {erb :post}
 end
 
 post '/:post_id/comments' do
