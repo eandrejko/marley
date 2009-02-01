@@ -82,12 +82,12 @@ module Marley
     
     # Caching keys
     def cache_key
-      "post/" + Marley::Post.layout_cache_key + "/" + Marley::Comment.ham.cache_key + "/" + updated_on.to_i.to_s
+      "post/#{self.id}/" + Marley::Post.layout_cache_key + "/" + Marley::Comment.ham.cache_key + "/" + updated_on.to_i.to_s
     end
     
     # for collection of posts
     def self.cache_key(name = "")
-      "posts/#{name}/" + Marley::Post.layout_cache_key + "/" + self.find_all.map {|p| p.updated_on.to_i}.max.to_s
+      "posts/#{name}/" + Marley::Post.layout_cache_key + "/" + self.find_all.map {|p| p.cache_key}.join("/")
     end
     
     def self.layout_cache_key
