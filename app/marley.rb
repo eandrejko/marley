@@ -148,7 +148,7 @@ post '/:post_id/comments' do
       :referrer   => request.env['REFERER'].to_s,
       :permalink  => "#{hostname}#{@post.permalink}"
   } )
-  # puts params.inspect
+  params.delete("submit")
   @comment = Marley::Comment.create( params )
   if @comment.valid?
     redirect "/"+params[:post_id].to_s+'.html?thank_you=#comment_form'
