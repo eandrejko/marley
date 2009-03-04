@@ -94,8 +94,19 @@ def download_file(ext, mime, download = false)
   begin
     name = params[:splat].first if /^[A-Z|a-z|0-9|_|-]+$/.match(params[:splat].first)
     directory = Dir[File.join(Marley::Configuration::DATA_DIRECTORY, '*')].select { |dir| File.directory?(dir)  }.select{|dir| File.exists?(File.join(dir, "#{name}.#{ext}"))}
-    send_file(File.join(directory, name + "." + ext), :file_name => File.join(directory, name + "." + ext), :type => mime, :disposition => download ? 'attachment' : 'inline')
-  rescue
+    if directory.length >= 1
+      chosen = directory.first
+      send_file(File.join(chosen, name + "." + ext), :file_name => File.join(chosen, name + "." + ext), :type => mime, :disposition => download ? 'attachment' : 'inline')
+    else
+      throw :halt, [404, not_found ]
+    end
+  rescue => e
+    log_file = File.join(File.dirname(__FILE__), "../log/download_file.log")
+    logger = Logger.new(log_file)
+    def logger.format_message(severity, timestamp, progname, msg)
+      "[#{timestamp.strftime("%m/%d/%y %H:%M:%S")}] #{msg}\n" 
+    end
+    logger.info e.to_s + "\n\n" + e.backtrace.join("\n")
     throw :halt, [404, not_found ]
   end
   
