@@ -82,7 +82,7 @@ module Marley
     
     # Caching keys
     def cache_key
-      "post/#{self.id}/" + Marley::Post.layout_cache_key + "/" + Marley::Comment.ham.cache_key + "/" + updated_on.to_i.to_s
+      "post/#{self.id}/" + Marley::Post.layout_cache_key + "/" + Marley::Comment.count.to_s + "/" + updated_on.to_i.to_s
     end
     
     # for collection of posts
